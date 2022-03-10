@@ -5,12 +5,8 @@ $(document).ready(() => {
 
 const selectData = () => {
     $.ajax({
-        url: "localhost:5000/api",
+        url: "http://localhost:5000/api",
         method: "GET",
-        headers: {
-            "accept": "application/json",
-            "Access-Control-Allow-Origin":"*"
-        },
         crossDomain : "true",
         dataType: "json",
         success: (data) => {
