@@ -11,6 +11,8 @@ const options = {
 let data;
 
 const knex = require('knex')(options);
+const http = require("http");
+const PORT = process.env.PORT || 5000;
 
 knex.from('murid').select("*")
     .then((rows) => {
@@ -21,21 +23,21 @@ knex.from('murid').select("*")
         knex.destroy();
     });
 
-const  http = require("http");
-const PORT = process.env.PORT || 5000;
-
 const server = http.createServer(async(req, res) =>{
+    const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "PUT, POST, GET",
+        "Access-Control-Max-Age": 2592000
+    }
     if(req.url === "/api" && req.method === "GET"){
 
-        res.writeHead(200, {"Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
-        "Access-Control-Max-Age": 2592000,});
+        res.writeHead(200, headers);
 
         res.write(data);
 
         res.end();
     }else{
-        res.writeHead(404, {"Content-Type": "application/json"});
+        res.writeHead(404, headers);
         res.end(JSON.stringify({"message" : "Route not found"}));
     }
 })
